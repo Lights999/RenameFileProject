@@ -1,0 +1,20 @@
+﻿<Window x:Class="WpfApplication1.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WpfApplication1"
+        mc:Ignorable="d"
+        Title="Drop file into list on left" Height="579" Width="830">
+    <Grid>
+        <Button x:Name="button_preview" Content="Preview" HorizontalAlignment="Left" Margin="465,184,0,0" VerticalAlignment="Top" Width="146" Click="button_preview_Click"/>
+        <ListBox x:Name="FileList" HorizontalAlignment="Left" Height="334" Margin="41,48,0,0" VerticalAlignment="Top" Width="374" AllowDrop="True" SelectionChanged="FileList_SelectionChanged"
+                 Drop="FileList_Drop"  PreviewDrop="FileList_PreviewDrop" />
+        <StackPanel HorizontalAlignment="Left" Height="100" Margin="293,282,0,0" VerticalAlignment="Top" Width="100"/>
+        <TextBox x:Name="textBox" HorizontalAlignment="Left" Height="63" Margin="465,88,0,0" TextWrapping="Wrap" Text="number: &lt;nn&gt;" VerticalAlignment="Top" Width="184" TextChanged="textBox_TextChanged"/>
+        <Button x:Name="button_reset" Content="Reset" HorizontalAlignment="Left" Margin="465,247,0,0" VerticalAlignment="Top" Width="146" Click="button_reset_Click"/>
+        <Button x:Name="button_rename" Content="Rename Files" HorizontalAlignment="Left" Margin="465,305,0,0" VerticalAlignment="Top" Width="146" Click="button_rename_Click"/>
+        <Button x:Name="button_clear" Content="Clear List" HorizontalAlignment="Left" Margin="465,358,0,0" VerticalAlignment="Top" Width="146" Click="button_clear_Click"/>
+
+    </Grid>
+</Window>
