@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
+using System.Linq;
+using System.Text;
 
 namespace WpfApplication1
 {
@@ -13,10 +15,13 @@ namespace WpfApplication1
     {
         public MainWindow()
         {
+            this.hopedNameFormat = new StringBuilder();
+
             InitializeComponent();
             this.originFileInfos = new List<FileInfo>();
             this.mappedFileNames = new List<FileNameMap>();
             this.button_reset.IsEnabled = false;
+     
         }
 
         #region PRIVATE_METHOD
@@ -37,7 +42,25 @@ namespace WpfApplication1
             {
                 string _extension = Path.GetExtension(fi.FullName);
                 _count++;
-                string _newFileName = hopedNameFormat.Replace("<nn>", string.Format("{0:D2}", _count)) + _extension;
+
+                var _numberCount = 0;
+                var _strForIndex = hopedNameFormat.ToString();
+                var _markStart = _strForIndex.IndexOf('<');
+                var _markEnd = _strForIndex.IndexOf('>');
+                for (int i = _markStart + 1; i < _markEnd; i++)
+                {
+                    if (System.Char.ToLower(hopedNameFormat[i]) == 'n')
+                    {
+                        _numberCount++;
+                    }
+                }
+
+                hopedNameFormat.Remove(_markStart, _markEnd - _markStart + 1);
+                var _fileNameFormat = "{0:D" + _numberCount + "}";
+                var _fileName = string.Format(_fileNameFormat, _count);
+                hopedNameFormat.Insert(_markStart, string.Format(_fileNameFormat, _count));
+
+                string _newFileName = hopedNameFormat.Append(_extension).ToString();
                 string _newPath =  fi.DirectoryName + Path.DirectorySeparatorChar + _newFileName;
                 Console.WriteLine(_newPath);
                 this.mappedFileNames.Add(new FileNameMap(fi.FullName, _newPath));
@@ -119,7 +142,8 @@ namespace WpfApplication1
 
         private void textBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            hopedNameFormat = this.textBox.Text;
+            hopedNameFormat.Clear();
+            hopedNameFormat.Append(this.textBox.Text);
             // hopedNameFormat.Replace("<n>", "{0}");
         }
         #endregion
@@ -127,7 +151,7 @@ namespace WpfApplication1
         #region PRIVATE_MEMBER
         List<FileInfo> originFileInfos;
         List<FileNameMap> mappedFileNames;
-        string hopedNameFormat;
+        StringBuilder hopedNameFormat;
         #endregion
     }
 
